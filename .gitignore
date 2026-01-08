@@ -1,0 +1,15 @@
+node_modules/
+dist/
+build/
+backend/.env
+__pycache__/
+*.pt
+*.pkl
+*.h5
+*.zip
+.venv/
+venv/
+backend/features.pkl
+.env
+backend/.env
+*.txt

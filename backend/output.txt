@@ -1,0 +1,170 @@
+--- Model Inspection ---
+Using device: cpu
+✅ Model file found at 'Models/resnet18_alzheimer_best.pth'.
+
+--- Expected Model Architecture ---
+ResNet(
+  (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+  (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (relu): ReLU(inplace=True)
+  (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  (layer1): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (1): BasicBlock(
+      (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer2): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer3): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer4): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+  (fc): Linear(in_features=512, out_features=4, bias=True)
+)
+
+✅ Successfully loaded state_dict into the model.
+
+--- Keys in State Dictionary (122 total) ---
+- conv1.weight
+- bn1.weight
+- bn1.bias
+...
+- layer4.1.bn2.num_batches_tracked
+- layer4.1.bn2.num_batches_tracked
+- layer4.1.bn2.num_batches_tracked
+- layer4.1.bn2.num_batches_tracked
+- layer4.1.bn2.num_batches_tracked
+- fc.weight
+- fc.bias
+
+--- Final Layer (fc) Inspection ---
+Shape of fc.weight: torch.Size([4, 512])
+Shape of fc.bias: torch.Size([4])
+Mean of fc.weight: -0.0017
+Std of fc.weight: 0.0634
+Bias values: tensor([-1.8330e-02,  1.6875e-05, -1.0552e-02, -4.7756e-02])
+
+--- Analysis ---
+✅ The final 'fc' layer appears to have trained weights (not zero or random initialization).
+✅ The model architecture matches the training script.
+✅ The model state was loaded successfully.
+
+Conclusion: The model file appears to be a valid, trained PyTorch model.
+
+
+Drive already mounted at /content/drive; to attempt to forcibly remount, call drive.mount("/content/drive", force_remount=True).
+Using device: cuda
+Classes: ['Mild Dementia', 'Moderate Dementia', 'Non Demented', 'Very mild Dementia']
+Total images: 86437
+Downloading: "https://download.pytorch.org/models/resnet18-f37072fd.pth" to /root/.cache/torch/hub/checkpoints/resnet18-f37072fd.pth
+100%|██████████| 44.7M/44.7M [00:00<00:00, 179MB/s]
+Epoch [1/15] Loss: 0.8931 | Val Accuracy: 71.83%
+✅ Best model saved
+Epoch [2/15] Loss: 0.7999 | Val Accuracy: 69.47%
+Epoch [3/15] Loss: 0.7782 | Val Accuracy: 72.21%
+✅ Best model saved
+Epoch [4/15] Loss: 0.7695 | Val Accuracy: 66.10%
+Epoch [5/15] Loss: 0.7611 | Val Accuracy: 73.10%
+✅ Best model saved
+Epoch [6/15] Loss: 0.7585 | Val Accuracy: 75.15%
+✅ Best model saved
+Epoch [7/15] Loss: 0.7537 | Val Accuracy: 74.12%
+Epoch [8/15] Loss: 0.7492 | Val Accuracy: 72.11%
+Epoch [9/15] Loss: 0.7557 | Val Accuracy: 75.94%
+✅ Best model saved
+Epoch [10/15] Loss: 0.7486 | Val Accuracy: 73.29%
+Epoch [11/15] Loss: 0.7510 | Val Accuracy: 79.55%
+✅ Best model saved
+Epoch [12/15] Loss: 0.7508 | Val Accuracy: 76.42%
+Epoch [13/15] Loss: 0.7524 | Val Accuracy: 66.76%
+Epoch [14/15] Loss: 0.7491 | Val Accuracy: 72.65%
+Epoch [15/15] Loss: 0.7355 | Val Accuracy: 76.68%
+
+🏆 BEST VALIDATION ACCURACY: 79.54650624710781
+
+📊 Classification Report:
+                    precision    recall  f1-score   support
+
+     Mild Dementia       0.32      0.84      0.47      1022
+ Moderate Dementia       0.27      0.97      0.42       121
+      Non Demented       0.94      0.81      0.87     13390
+Very mild Dementia       0.55      0.53      0.54      2755
+
+          accuracy                           0.77     17288
+         macro avg       0.52      0.79      0.57     17288
+      weighted avg       0.83      0.77      0.79     17288
+
+
+🧩 Confusion Matrix:
+[[  855    27    85    55]
+ [    3   117     0     1]
+ [ 1220   199 10818  1153]
+ [  562    92   635  1466]]
+
+📁 Model saved at: /content/drive/MyDrive/resnet18_alzheimer_best.pth
