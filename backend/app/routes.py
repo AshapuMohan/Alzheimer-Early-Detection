@@ -1,4 +1,5 @@
 import os
+import base64
 from fastapi import APIRouter, File, UploadFile
 from fastapi.responses import JSONResponse
 
@@ -30,7 +31,7 @@ async def analyze_mri(file: UploadFile = File(...)):
     """
     image_bytes = await file.read()
 
-    # First, validate if it's a real MRI scan
+    # First, validate if it's a real MRI scan (allows grids now)
     is_valid_mri = await nvidia_validate_mri_scan(image_bytes)
     if is_valid_mri is False:
         return JSONResponse(
@@ -40,50 +41,100 @@ async def analyze_mri(file: UploadFile = File(...)):
 
     # Get view and location
     analysis_result = await get_mri_view_and_location(image_bytes)
-    if not analysis_result or analysis_result.get("image_type") == "not_mri":
-        return JSONResponse(
-            status_code=400,
-            content={"error": "The uploaded image does not appear to be a brain MRI scan."},
-        )
-    if "view" not in analysis_result or "location" not in analysis_result:
+    
+    # Check for failure
+    if not analysis_result:
         return JSONResponse(
             status_code=500,
-            content={"error": "Failed to analyze MRI view and location. The model may not be able to interpret this specific image."},
+            content={"error": "Failed to analyze MRI view and location."},
         )
 
-    view = analysis_result["view"]
-    location = analysis_result["location"]
+    image_type = analysis_result.get("image_type", "dataset_image")
+    
+    # Logic for Single View vs Multi-View
+    image_to_process = None
+    processed_scan_info = None
 
-    # Get AI-generated suggestions
-    suggestions = await get_ai_suggestions(view, location)
+    if image_type == "multi_view":
+        # Attempt to split
+        scans = split_multi_view_image(image_bytes)
+        if not scans:
+             image_to_process = image_bytes # Fallback
+        else:
+            # OPTIMIZATION: Check similarity for ALL scans locally first
+            best_score = -1
+            best_scan = None
+            detected_view = analysis_result.get("view", "Unknown")
+            detected_loc = analysis_result.get("location", "Unknown")
 
-    # Get prediction
-    prediction_result = predict_alzheimer_stage(image_bytes)
-    if "error" in prediction_result:
+            for scan in scans:
+                # We need to run finding similar image to check the score
+                sim_res = find_similar_image(scan)
+                score = 0
+                if "error" not in sim_res:
+                    score = sim_res.get("similarity_score", 0)
+                
+                if score > best_score:
+                    best_score = score
+                    best_scan = scan
+                    
+            # Select the best one
+            image_to_process = best_scan if best_scan else scans[0]
+
+    else:
+        image_to_process = image_bytes
+
+    # Now we have ONE image to process fully
+    # Get predictions
+    prediction_result = predict_alzheimer_stage(image_to_process)
+    predicted_class = "Unknown"
+    probabilities = {}
+    
+    if "error" not in prediction_result:
+        predicted_class = prediction_result["predicted_class"]
+        probabilities = prediction_result.get("probabilities", {})
+    else:
         import random
         predicted_class = random.choice(list(CLASS_LABELS.values()))
-    else:
-        predicted_class = prediction_result["predicted_class"]
 
-    # Get similar images
-    similar_result = find_similar_image(image_bytes)
+    # Get AI suggestions 
+    # Use detected view/loc from the INITIAL analysis (which was for the whole grid/image)
+    # Ideally we would re-run view detection on the crop, but that costs API calls.
+    # The user accepted using the initial detection or we can just pass the generic one.
+    view = analysis_result.get("view", "Unknown")
+    loc = analysis_result.get("location", "Unknown")
+    suggestions = await get_ai_suggestions(view, loc)
+
+    # Similar images (Re-run for the selected best one to get the details object)
+    similar_result = find_similar_image(image_to_process)
+    top_similar = None
     if "error" not in similar_result:
         top_similar = {
             "path": similar_result["most_similar_image"],
             "label": similar_result["label"],
             "similarity": similar_result["similarity_score"]
         }
-    else:
-        top_similar = None
 
+    # Encode image for display
+    base64_img = base64.b64encode(image_to_process).decode('utf-8')
+
+    result_obj = {
+        "id": 1,
+        "image_base64": f"data:image/jpeg;base64,{base64_img}",
+        "view": view,
+        "location": loc,
+        "suggestions": suggestions,
+        "predicted_stage": predicted_class,
+        "probabilities": probabilities,
+        "similar_case": top_similar
+    }
+
+    # Return structure
+    # Frontend expects a list for "results"
     return JSONResponse(
         content={
-            "view": view,
-            "location": location,
-            "suggestions": suggestions,
-            "predicted_stage": predicted_class,
-            "probabilities": prediction_result.get("probabilities", {}),
-            "similar_case": top_similar
+            "type": "single", # Even if it was multi, we are now returning a single filtered result
+            "results": [result_obj] 
         }
     )
 

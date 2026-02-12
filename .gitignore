@@ -10,6 +10,6 @@ __pycache__/
 .venv/
 venv/
 backend/features.pkl
-.env
+.env.local
 backend/.env
 *.txt

@@ -28,7 +28,8 @@ MODEL_PATH = "/content/drive/MyDrive/resnet18_alzheimer_best.pth"
 NUM_CLASSES = 4
 BATCH_SIZE = 32        # T4 GPU safe
 EPOCHS = 15
-LR = 1e-3
+LR = 1e-3 
+#  Lr=0.497870683678
 
 # ======================
 # TRANSFORMS (MRI-SAFE)

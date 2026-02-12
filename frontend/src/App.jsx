@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 // Import Components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import LandingPage from "./components/LandingPage";
 
 //import pages
 import Home from "./components/home";
@@ -16,7 +17,8 @@ function App() {
       <Navbar />
       <main className="app-content flex-grow flex flex-col">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/home-old" element={<Home />} />
           <Route path="/upload" element={<MriUpload />} />
           <Route path="/about" element={<About />} />
           <Route path="/tab" element={<Tabs />} />

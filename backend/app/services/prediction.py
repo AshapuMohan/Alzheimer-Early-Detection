@@ -120,7 +120,7 @@ async def nvidia_validate_mri_scan(img_bytes: bytes) -> bool | None:
                     "content": [
                         {
                             "type": "text", 
-                            "text": "Is this image a SINGLE brain MRI scan showing a cross-sectional view of the brain? If it is a grid, collage, or shows multiple slices, answer 'no'. Please answer with only the word 'yes' or 'no'."
+                            "text": "Is this image a brain MRI scan? It can be a SINGLE slice OR a MULTI-VIEW grid/collage. As long as it contains brain MRI imagery, answer 'yes'. Please answer with only the word 'yes' or 'no'."
                         },
                         {
                             "type": "image_url",
